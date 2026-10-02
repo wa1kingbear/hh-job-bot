@@ -127,3 +127,25 @@ export const pollingRuns = sqliteTable("polling_runs", {
   notifiedCount: integer("notified_count").notNull().default(0),
   error: text("error"),
 });
+
+export const oauthAuthorizationRequests = sqliteTable(
+  "oauth_authorization_requests",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    stateHash: text("state_hash").notNull(),
+    encryptedCodeVerifier: text("encrypted_code_verifier").notNull(),
+    expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+    consumedAt: integer("consumed_at", { mode: "timestamp" }),
+    createdAt,
+  },
+  (table) => [uniqueIndex("oauth_authorization_requests_state_hash_unique").on(table.stateHash)],
+);
+
+export const oauthTokens = sqliteTable("oauth_tokens", {
+  id: integer("id").primaryKey(),
+  encryptedAccessToken: text("encrypted_access_token").notNull(),
+  encryptedRefreshToken: text("encrypted_refresh_token"),
+  tokenType: text("token_type").notNull(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+});

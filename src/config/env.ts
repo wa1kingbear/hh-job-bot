@@ -28,3 +28,33 @@ export type AppConfig = z.infer<typeof envSchema>;
 export function loadConfig(environment: NodeJS.ProcessEnv = process.env): AppConfig {
   return envSchema.parse(environment);
 }
+
+export interface HhOAuthConfig {
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  userAgent: string;
+  tokenEncryptionKey: string;
+}
+
+export function getHhOAuthConfig(config: AppConfig): HhOAuthConfig | null {
+  const values = [
+    config.HH_CLIENT_ID,
+    config.HH_CLIENT_SECRET,
+    config.HH_REDIRECT_URI,
+    config.HH_USER_AGENT,
+    config.TOKEN_ENCRYPTION_KEY,
+  ];
+  if (values.every((value) => value === undefined)) return null;
+  if (values.some((value) => value === undefined)) {
+    throw new Error("HH OAuth configuration is incomplete");
+  }
+
+  return {
+    clientId: config.HH_CLIENT_ID!,
+    clientSecret: config.HH_CLIENT_SECRET!,
+    redirectUri: config.HH_REDIRECT_URI!,
+    userAgent: config.HH_USER_AGENT!,
+    tokenEncryptionKey: config.TOKEN_ENCRYPTION_KEY!,
+  };
+}
