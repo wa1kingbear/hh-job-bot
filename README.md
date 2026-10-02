@@ -29,14 +29,3 @@ npm run typecheck
 npm test
 npm run build
 ```
-
-## Текущее состояние
-
-- создана SQLite-схема и первая миграция;
-- реализован типизированный HH API client с retry для `429` и `5xx`;
-- реализован агрегатор поисковых профилей с дедупликацией;
-- формализованы hard filters и расчёт Freshness, Competition и Priority Score;
-- Vue как основной стек отклоняется;
-- React Native как основной стек получает штраф `-10`.
-
-OAuth, Telegram-уведомления, scheduler и LLM-анализ будут подключаться следующими этапами.
